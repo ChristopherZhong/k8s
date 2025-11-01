@@ -33,12 +33,12 @@ The home lab starts with a single Raspberry Pi 5 and can be expanded to a multi-
 
 The following instructions are for preparing the SSD. We assume that the SD card is already flashed. If not, the following instructions may still work.
 
-1. **Download Raspberry Pi Imager** from https://www.raspberrypi.com/software/
+1. **Download Raspberry Pi Imager** from https://www.raspberrypi.com/software/.
 
 1. **Flash Raspberry Pi OS**
-   - Use Raspberry Pi Imager to flash Raspberry Pi OS Lite (64-bit) to your SSD
+   - Use Raspberry Pi Imager to flash Raspberry Pi OS Lite (64-bit) to your SSD.
    - **Important**: Configure the following in Advanced Options:
-     - **Hostname**: Set to `raspberrypi-1`
+     - **Hostname**: Set to `raspberrypi-1` (or your preferred hostname)
      - **Enable SSH**: Use public-key authentication only (recommended)
      - **Set username**: `pi` (or your preferred username)
      - **SSH Public Key**: Paste your Ed25519 public key (see SSH key generation below)
@@ -48,10 +48,10 @@ The following instructions are for preparing the SSD. We assume that the SD card
 1. **Generate SSH Key Pair** (if you don't have one)
    ```shell
    # On your local machine, generate Ed25519 key (most secure and performant)
-   ssh-keygen -t ed25519 -C "you@example.com"
+   $ ssh-keygen -t ed25519 -C "you@example.com"
    
    # Display your public key to copy into Raspberry Pi Imager
-   cat ~/.ssh/id_ed25519.pub
+   $ cat ~/.ssh/id_ed25519.pub
    ```
 
    **Note**: Copy the entire public key output and paste it into the SSH Public Key field in Raspberry Pi Imager.
@@ -61,14 +61,25 @@ The following instructions are for preparing the SSD. We assume that the SD card
 1. **Initial Boot and Setup**
    ```shell
    # SSH into your Pi using the hostname or IP
-   ssh pi@raspberrypi-1.local
+   $ ssh pi@raspberrypi-1.local
    
    # Update the system
-   sudo apt update && sudo apt full-upgrade
-   
-   # Install Git to clone this repository
-   sudo apt install git
+   $ sudo apt update && sudo apt full-upgrade   
    ```
+
+1. **Install Git**
+   ```shell
+   # Install Git to clone this repository
+   $ sudo apt install git
+   ```
+
+1. **Configure Git**. First configure the user name and email.
+   ```shell
+   $ git config --global user.name "John Doe"
+   $ git config --global user.email johndoe@example.com
+   ```
+   For more details see the [docs](
+https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup).
 
 ### Step 2: Install Kubernetes (K3s)
 
@@ -81,30 +92,30 @@ The following instructions are for preparing the SSD. We assume that the SD card
 1. **Install K3s**. Follow the Quick-Start [guide](https://docs.k3s.io/quick-start).
    ```shell
    # Install K3s
-   curl -sfL https://get.k3s.io | sh -
+   $ curl -sfL https://get.k3s.io | sh -
    
    # Verify installation
-   sudo systemctl status k3s
+   $ sudo systemctl status k3s
    
    # Check nodes
-   sudo kubectl get nodes
+   $ sudo kubectl get nodes
    ```
 
 1. **Configure kubectl for non-root user**
    ```shell
    # Copy kubeconfig to user directory
-   mkdir -p ~/.kube
-   sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-   sudo chown $USER:$USER ~/.kube/config
+   $ mkdir -p ~/.kube
+   $ sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+   $ sudo chown $USER:$USER ~/.kube/config
    
    # Test access
-   kubectl get all --all-namespaces
+   $ kubectl get all --all-namespaces
    ```
 
 1. **Optional: Install kubectl on your local machine**
    ```shell
    # Copy the kubeconfig from Pi to your local machine
-   scp pi@192.168.1.100:/etc/rancher/k3s/k3s.yaml ~/.kube/config-homelab
+   $ scp pi@192.168.1.100:/etc/rancher/k3s/k3s.yaml ~/.kube/config-homelab
    
    # Edit the server URL in the config file to point to your Pi's IP
    # Then use: export KUBECONFIG=~/.kube/config-homelab
