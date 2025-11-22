@@ -23,8 +23,8 @@ The home lab starts with a single Raspberry Pi 5 and can be expanded to a multi-
 
 ### Prerequisites
 
-- Raspberry Pi 5 (8GB+ RAM recommended)
-- M.2 NVMe SSD (512GB+ recommended)
+- Raspberry Pi 5 (8 GB or more RAM recommended)
+- M.2 NVMe SSD (512 GB or larger recommended)
 - MicroSD card (for initial boot)
 - Network connection (Ethernet preferred)
 - Another computer for SSH access
@@ -78,8 +78,7 @@ The following instructions are for preparing the SSD. We assume that the SD card
    $ git config --global user.name "John Doe"
    $ git config --global user.email johndoe@example.com
    ```
-   For more details see the [docs](
-https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup).
+   For more details see the [docs](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup).
 
 ### Step 2: Install Kubernetes (K3s)
 
